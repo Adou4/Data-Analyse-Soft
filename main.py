@@ -1,10 +1,24 @@
-# I start to import my libs 
-
 import pandas as pd
-import numpy as np
-import matploitlib.pyplot as plt
+import ipywidgets as widgets
+from IPython.display import display
 
-# In this section I'll use pandas for import my data in csv file
-# example 
+# Charger les données
+data = pd.read_csv('https://media.githubusercontent.com/media/datablist/sample-csv-files/main/files/organizations/organizations-100.csv')
 
-df = pd.read_csv('our_file.csv')
+# Créer des widgets pour la sélection des colonnes et le filtrage
+column_dropdown = widgets.Dropdown(options=list(data.columns), description='Colonnes:')
+filter_text = widgets.Text(description='Filtrer:')
+filter_button = widgets.Button(description='Filtrer')
+
+# Fonction de filtrage
+def filter_data(_):
+    column = column_dropdown.value
+    filter_value = filter_text.value
+    filtered_data = data[data[column] == filter_value]
+    display(filtered_data)
+
+# Connecter la fonction de filtrage au bouton
+filter_button.on_click(filter_data)
+
+# Afficher les widgets
+display(column_dropdown, filter_text, filter_button)
